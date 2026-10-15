@@ -2,6 +2,10 @@
 const TOKEN_KEY = 'token';
 const USER_KEY = 'user';
 
+// כתובת השרת. בפיתוח ריקה, והבקשות עוברות דרך ה-proxy של Vite.
+// בענן נקבעת בזמן הבנייה במשתנה VITE_API_URL, למשל https://drivenow-api.onrender.com
+const API_BASE = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '');
+
 let onUnauthorized = () => {};
 export const setUnauthorizedHandler = (handler) => {
   onUnauthorized = handler;
@@ -46,7 +50,7 @@ async function request(path, { method = 'GET', body } = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`/api${path}`, {
+  const response = await fetch(`${API_BASE}/api${path}`, {
     method,
     headers,
     body: body ? JSON.stringify(body) : undefined,
