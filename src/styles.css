@@ -386,33 +386,118 @@ select {
   box-shadow: var(--shadow);
 }
 
-.demo-users {
+/* על שם מי ההזמנה */
+.booking-for {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.booking-for span {
+  display: block;
   font-size: 13px;
   color: var(--muted);
-  padding-top: 16px;
-  border-top: 1px dashed var(--border);
 }
 
-.demo-users div {
+.booking-for strong {
+  font-size: 16px;
+}
+
+.link-button {
+  color: var(--primary);
+  font-weight: 500;
+  font-size: 14px;
+  padding: 4px 0;
+  align-self: flex-start;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
+
+/* איסוף והחזרה: תאריך ושעה */
+.when {
+  display: grid;
+  grid-template-columns: 1fr 110px;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.when legend {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 6px;
+  padding: 0;
+}
+
+.when select {
+  width: 100%;
+}
+
+.summary small {
+  display: block;
+  font-size: 12px;
+}
+
+.summary small.discount {
+  color: var(--success);
+  font-weight: 500;
+}
+
+.summary-total {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  align-items: baseline;
+  gap: 8px;
 }
 
-.chip-button {
+.summary-total s {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.price small {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ניהול רכבים */
+.admin-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+button.small {
   padding: 5px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--surface);
   font-size: 13px;
 }
 
-.chip-button:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+.car-card.inactive .car-visual {
+  background: var(--surface-2);
+  color: var(--muted);
+}
+
+.car-visual {
+  position: relative;
+}
+
+.out-badge {
+  position: absolute;
+  top: 10px;
+  inset-inline-start: 10px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 /* ---------- cars ---------- */
@@ -700,29 +785,6 @@ select {
 .summary strong {
   color: var(--text);
   font-size: 20px;
-}
-
-.race-box {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px dashed var(--border);
-}
-
-.race-box strong {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-}
-
-.race-box p {
-  margin: 2px 0 0;
-  font-size: 13px;
-  color: var(--muted);
 }
 
 /* ---------- alerts ---------- */

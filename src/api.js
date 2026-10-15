@@ -89,7 +89,10 @@ export const api = {
   register: (details) => request('/auth/register', { method: 'POST', body: details }),
   getCars: (params) => request(`/cars?${query(params)}`),
   getFeatures: () => request('/features'),
-  getCustomers: (params) => request(`/customers?${query(params)}`),
+  // ניהול רכבים - מנהל בלבד (השרת אוכף)
+  createCar: (car) => request('/cars', { method: 'POST', body: car }),
+  setCarAvailability: (id, isActive) => request(`/cars/${id}/availability`, { method: 'PATCH', body: { isActive } }),
+  deleteCar: (id) => request(`/cars/${id}`, { method: 'DELETE' }),
   getRentals: (params) => request(`/rentals?${query(params)}`),
   createRental: (rental) => request('/rentals', { method: 'POST', body: rental }),
   deleteRental: (id) => request(`/rentals/${id}`, { method: 'DELETE' }),

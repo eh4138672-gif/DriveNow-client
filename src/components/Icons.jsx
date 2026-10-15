@@ -40,12 +40,6 @@ export const CalendarIcon = (props) => (
   </svg>
 );
 
-export const BoltIcon = (props) => (
-  <svg {...base} {...props}>
-    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-  </svg>
-);
-
 export const CloseIcon = (props) => (
   <svg {...base} {...props}>
     <path d="M18 6L6 18M6 6l12 12" />

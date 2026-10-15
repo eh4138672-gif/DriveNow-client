@@ -3,15 +3,24 @@ import { api } from '../api.js';
 import Pagination from '../components/Pagination.jsx';
 import Alert from '../components/Alert.jsx';
 import { CalendarIcon } from '../components/Icons.jsx';
+import { formatShekels } from '../pricing.js';
 
 const PAGE_SIZE = 6;
-const formatDate = (value) => new Date(value).toLocaleDateString('he-IL', { day: 'numeric', month: 'short', year: 'numeric' });
+// למשל: 16 באוק׳ 2026, 09:00
+const formatDateTime = (value) =>
+  new Date(value).toLocaleString('he-IL', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
 
 function status(rental) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  if (new Date(rental.dateEnd) <= today) return { key: 'past', label: 'הסתיימה' };
-  if (new Date(rental.dateStart) <= today) return { key: 'active', label: 'פעילה' };
+  const now = new Date();
+  if (new Date(rental.dateEnd) <= now) return { key: 'past', label: 'הסתיימה' };
+  if (new Date(rental.dateStart) <= now) return { key: 'active', label: 'פעילה' };
   return { key: 'upcoming', label: 'עתידית' };
 }
 
@@ -78,13 +87,13 @@ export default function RentalsPage({ user }) {
                   <span className={`badge badge-${s.key}`}>{s.label}</span>
                 </div>
                 <div className="rental-meta">
-                  <span><CalendarIcon width={15} height={15} /> {formatDate(r.dateStart)} - {formatDate(r.dateEnd)}</span>
+                  <span><CalendarIcon width={15} height={15} /> {formatDateTime(r.dateStart)} - {formatDateTime(r.dateEnd)}</span>
                   {isAdmin && <span>לקוח: {r.customerName}</span>}
                   <span>#{r.id}</span>
                 </div>
               </div>
               <div className="rental-side">
-                <strong className="rental-price">₪{r.totalPrice}</strong>
+                <strong className="rental-price">{formatShekels(r.totalPrice)}</strong>
                 {s.key !== 'past' && (
                   <button className="danger-ghost" onClick={() => cancel(r)}>ביטול</button>
                 )}

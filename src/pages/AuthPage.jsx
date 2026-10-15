@@ -3,13 +3,6 @@ import { api, auth } from '../api.js';
 import Alert from '../components/Alert.jsx';
 import { CarIcon } from '../components/Icons.jsx';
 
-// משתמשי הדמו מה-README, למילוי מהיר בהדגמה
-const DEMO_USERS = [
-  { label: 'מנהל', email: 'admin@rental.local', password: 'Admin123!' },
-  { label: 'ישראל (לקוח)', email: 'israel@rental.local', password: 'Customer123!' },
-  { label: 'דנה (לקוחה)', email: 'dana@rental.local', password: 'Customer123!' },
-];
-
 const EMPTY_REGISTER = { name: '', email: '', phoneNumber: '', driverLicenseId: '', password: '' };
 
 export default function AuthPage({ onLogin }) {
@@ -85,20 +78,6 @@ export default function AuthPage({ onLogin }) {
             {busy ? 'רגע...' : mode === 'login' ? 'כניסה' : 'יצירת חשבון'}
           </button>
         </form>
-
-        {mode === 'login' && (
-          <div className="demo-users">
-            <span>כניסה מהירה למשתמשי דמו:</span>
-            <div>
-              {DEMO_USERS.map((u) => (
-                <button key={u.email} type="button" className="chip-button"
-                  onClick={() => setLogin({ email: u.email, password: u.password })}>
-                  {u.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
