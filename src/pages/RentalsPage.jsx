@@ -4,6 +4,7 @@ import Pagination from '../components/Pagination.jsx';
 import Alert from '../components/Alert.jsx';
 import { CalendarIcon } from '../components/Icons.jsx';
 import { formatShekels } from '../pricing.js';
+import PaymentModal from './PaymentModal.jsx';
 
 const PAGE_SIZE = 6;
 // למשל: 16 באוק׳ 2026, 09:00
@@ -31,6 +32,13 @@ export default function RentalsPage({ user }) {
   const [data, setData] = useState(null);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const [paying, setPaying] = useState(null);
+
+  const onPaid = (paid) => {
+    setPaying(null);
+    setNotice(`השכרה #${paid.id} שולמה: ${formatShekels(paid.amountPaid)} בכרטיס •••• ${paid.cardLast4} · אסמכתא ${paid.paymentReference}`);
+    load();
+  };
 
   const load = useCallback(() => {
     api
@@ -94,10 +102,12 @@ export default function RentalsPage({ user }) {
               </div>
               <div className="rental-side">
                 <strong className="rental-price">{formatShekels(r.amountPaid ?? r.totalPrice)}</strong>
-                {r.amountPaid != null && (
+                {r.amountPaid != null ? (
                   <small className="paid-badge" title={`אסמכתא ${r.paymentReference}`}>
                     שולם · •••• {r.cardLast4}
                   </small>
+                ) : (
+                  <button className="primary" onClick={() => setPaying(r)}>תשלום</button>
                 )}
                 {s.key !== 'past' && (
                   <button className="danger-ghost" onClick={() => cancel(r)}>ביטול</button>
@@ -109,6 +119,8 @@ export default function RentalsPage({ user }) {
       </div>
 
       {data && <Pagination {...data} onChange={setPage} />}
+
+      {paying && <PaymentModal rental={paying} onClose={() => setPaying(null)} onPaid={onPaid} />}
     </section>
   );
 }

@@ -3,7 +3,6 @@ import { api } from '../api.js';
 import Alert from '../components/Alert.jsx';
 import { CloseIcon } from '../components/Icons.jsx';
 import { formatShekels, quote } from '../pricing.js';
-import PaymentFields, { emptyCard, toPaymentDto, validateCard } from '../components/PaymentFields.jsx';
 
 // תאריך מקומי בפורמט yyyy-mm-dd. לא toISOString, כי הוא ב-UTC ועלול להחזיר את היום הקודם
 const toInputDate = (date) =>
@@ -48,8 +47,6 @@ export default function BookingModal({ car, user, onClose }) {
     endDate: addDays(4),
     endTime: '09:00',
   });
-  const [card, setCard] = useState(emptyCard);
-  const [paymentTouched, setPaymentTouched] = useState(false);
   const [result, setResult] = useState(null);
   const [busy, setBusy] = useState(false);
 
@@ -68,7 +65,6 @@ export default function BookingModal({ car, user, onClose }) {
   const periodValid = hours >= 1;
   const price = quote(car.pricePerHour, hours);
   const licenseValid = !forOther || LICENSE_PATTERN.test(driverLicenseId);
-  const cardValid = Object.keys(validateCard(card)).length === 0;
   const target = forOther ? `בעל רישיון ${driverLicenseId}` : user.name;
 
   const book = () =>
@@ -77,17 +73,12 @@ export default function BookingModal({ car, user, onClose }) {
       driverLicenseId: forOther ? driverLicenseId : null,
       dateStart,
       dateEnd,
-      // הסכום לא נשלח - השרת מחשב אותו בעצמו לפי מחיר הרכב
-      payment: toPaymentDto(card),
     });
 
   // אם מישהו אחר הזמין את הרכב לאותו זמן - גם באותו רגע ממש - השרת מחזיר 409, ומוצגת הודעה
   // שהרכב תפוס. בהצלחה, השם מגיע מהשרת - כך רואים על שם מי ההזמנה נרשמה בפועל
   const submit = async (e) => {
     e.preventDefault();
-    // שליחה עם כרטיס לא תקין רק מסמנת את השדות החסרים
-    setPaymentTouched(true);
-    if (!cardValid) return;
     setBusy(true);
     try {
       const rental = await book();
@@ -182,10 +173,8 @@ export default function BookingModal({ car, user, onClose }) {
             )}
           </div>
 
-          <PaymentFields card={card} onChange={setCard} touched={paymentTouched} />
-
           <button type="submit" className="primary block" disabled={!ready}>
-            {busy ? 'מעבד תשלום...' : periodValid ? `תשלום ${formatShekels(price.total)} והזמנה` : 'תשלום והזמנה'}
+            {busy ? 'שולח...' : 'אישור הזמנה'}
           </button>
         </form>
 
@@ -199,16 +188,7 @@ function BookingResult({ result }) {
   if (result.ok) {
     return (
       <Alert type="success" title={`ההזמנה על שם ${result.who} אושרה`}>
-        השכרה #{result.rental.id} · שולם {formatShekels(result.rental.amountPaid)} בכרטיס •••• {result.rental.cardLast4}
-        <br />
-        אסמכתא: <span dir="ltr">{result.rental.paymentReference}</span>
-      </Alert>
-    );
-  }
-  if (result.status === 402) {
-    return (
-      <Alert type="error" title="התשלום נדחה - ההזמנה לא בוצעה">
-        {result.message}
+        השכרה #{result.rental.id} · סה"כ ₪{result.rental.totalPrice} · התשלום בלשונית "ההשכרות שלי"
       </Alert>
     );
   }

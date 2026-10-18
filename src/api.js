@@ -100,4 +100,5 @@ export const api = {
   getRentals: (params) => request(`/rentals?${query(params)}`),
   createRental: (rental) => request('/rentals', { method: 'POST', body: rental }),
   deleteRental: (id) => request(`/rentals/${id}`, { method: 'DELETE' }),
+  payRental: (id, payment) => request(`/rentals/${id}/pay`, { method: 'POST', body: payment }),
 };
