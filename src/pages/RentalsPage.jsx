@@ -93,7 +93,12 @@ export default function RentalsPage({ user }) {
                 </div>
               </div>
               <div className="rental-side">
-                <strong className="rental-price">{formatShekels(r.totalPrice)}</strong>
+                <strong className="rental-price">{formatShekels(r.amountPaid ?? r.totalPrice)}</strong>
+                {r.amountPaid != null && (
+                  <small className="paid-badge" title={`אסמכתא ${r.paymentReference}`}>
+                    שולם · •••• {r.cardLast4}
+                  </small>
+                )}
                 {s.key !== 'past' && (
                   <button className="danger-ghost" onClick={() => cancel(r)}>ביטול</button>
                 )}

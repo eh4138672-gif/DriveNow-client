@@ -960,3 +960,65 @@ section > .alert {
     align-items: stretch;
   }
 }
+
+/* ---------- תשלום ---------- */
+
+.payment {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.payment legend {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 6px;
+}
+
+.payment-note {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--conflict);
+  background: var(--conflict-soft);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.test-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.test-cards .chip {
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 3px 10px;
+}
+
+.field-error {
+  font-size: 12px;
+  color: var(--danger);
+}
+
+.card-brand {
+  font-style: normal;
+  color: var(--primary);
+  margin-inline-start: 6px;
+}
+
+.paid-badge {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--success);
+  background: var(--success-soft);
+  border-radius: 999px;
+  padding: 2px 10px;
+  white-space: nowrap;
+}
